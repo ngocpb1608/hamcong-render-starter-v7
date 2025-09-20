@@ -22,26 +22,22 @@ services:
       - key: JWT_SECRET
         value: change_me_super_secret
 
+      # Tạm thời để * — sau deploy ta sẽ đổi thành URL frontend
       - key: CORS_ORIGIN
         value: "*"
 
-      # Tham chiếu URL của FRONTEND (static site)
+      # Placeholder: sau deploy ta sẽ điền URL frontend vào đây
       - key: PUBLIC_BASE_URL
-        fromService:
-          name: chamcong-frontend
-          type: web      # <-- QUAN TRỌNG: vẫn là "web"
-          property: url
+        value: ""
 
       - key: SMTP_URL
         value: ""
-
       - key: SMTP_FROM
         value: "no-reply@trung.coffee"
-
       - key: APP_LOGO_URL
         value: ""
 
-  # FRONTEND (Static site trên CDN)
+  # FRONTEND (Static site CDN)
   - type: web
     name: chamcong-frontend
     runtime: static
@@ -49,8 +45,6 @@ services:
     buildCommand: npm ci || npm i && npm run build
     staticPublishPath: dist
     envVars:
+      # Placeholder: sau deploy ta sẽ điền URL backend vào đây
       - key: VITE_API_BASE
-        fromService:
-          name: chamcong-backend
-          type: web      # <-- tham chiếu web backend
-          property: url
+        value: ""
