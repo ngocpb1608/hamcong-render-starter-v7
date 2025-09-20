@@ -4,9 +4,10 @@ databases:
     plan: free
 
 services:
+  # BACKEND (Node + Prisma)
   - type: web
     name: chamcong-backend
-    env: node
+    runtime: node
     plan: free
     rootDir: backend
     buildCommand: npm ci || npm i && npx prisma generate && npx prisma db push && npm run build
@@ -17,30 +18,39 @@ services:
         fromDatabase:
           name: chamcong-db
           property: connectionString
+
       - key: JWT_SECRET
         value: change_me_super_secret
+
       - key: CORS_ORIGIN
         value: "*"
+
+      # Tham chiếu URL của FRONTEND (static site)
       - key: PUBLIC_BASE_URL
         fromService:
           name: chamcong-frontend
-          type: static
+          type: web      # <-- QUAN TRỌNG: vẫn là "web"
           property: url
+
       - key: SMTP_URL
         value: ""
+
       - key: SMTP_FROM
         value: "no-reply@trung.coffee"
+
       - key: APP_LOGO_URL
         value: ""
 
-  - type: static
+  # FRONTEND (Static site trên CDN)
+  - type: web
     name: chamcong-frontend
+    runtime: static
     rootDir: frontend
     buildCommand: npm ci || npm i && npm run build
-    publishPath: dist
+    staticPublishPath: dist
     envVars:
       - key: VITE_API_BASE
         fromService:
           name: chamcong-backend
-          type: web
+          type: web      # <-- tham chiếu web backend
           property: url
