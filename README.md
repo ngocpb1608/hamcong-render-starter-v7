@@ -1,0 +1,1 @@
+# ChamCong Payroll v7\nBuild: 2025-09-20T18:10:54.959452Z\n\n- Cấu trúc: backend/, frontend/, render.yaml ở ROOT.\n- Deploy: Render Blueprint với file render.yaml.\n

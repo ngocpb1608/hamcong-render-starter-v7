@@ -1,0 +1,15 @@
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import { auth } from './auth.js';
+import { employees } from './routes/employees.js';
+import { timesheets } from './routes/timesheets.js';
+import { payroll } from './routes/payroll.js';
+const app = express();
+const origins = (process.env.CORS_ORIGIN || '*').split(',');
+app.use(cors({ origin: origins, credentials: true }));
+app.use(express.json({ limit: '10mb' }));
+app.get('/', (_req, res) => res.send('ChamCong Payroll API OK v7'));
+app.get('/healthz', (_req, res) => res.json({ ok: true }));
+app.use('/auth', auth); app.use('/employees', employees); app.use('/timesheets', timesheets); app.use('/payroll', payroll);
+const PORT = process.env.PORT || 8080; app.listen(PORT, () => console.log('API server listening on', PORT));

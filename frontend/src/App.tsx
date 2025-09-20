@@ -1,0 +1,1 @@
+export default function App(){return (<div style={{padding:20}}>Upload bản v5 trước để có đầy đủ UI. Backend vẫn dùng được.</div>)}

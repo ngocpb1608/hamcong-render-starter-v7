@@ -1,0 +1,6 @@
+import express from 'express'; import { PrismaClient } from '@prisma/client'; import { requireAuth } from '../middleware/requireAuth.js';
+const prisma = new PrismaClient(); export const employees = express.Router(); employees.use(requireAuth);
+employees.get('/', async (req:any,res)=>{ const ws=req.user.ws; const list=await prisma.employee.findMany({where:{workspaceId:ws},orderBy:{code:'asc'}}); res.json(list); });
+employees.post('/', async (req:any,res)=>{ const ws=req.user.ws; const {code,name,dob,cccd,status}=req.body; const emp=await prisma.employee.create({data:{code,name,cccd,status:status||'ACTIVE',workspaceId:ws,dob:dob?new Date(dob):null}}); res.json(emp); });
+employees.put('/:id', async (req:any,res)=>{ const {id}=req.params; const {name,dob,cccd,status}=req.body; const emp=await prisma.employee.update({where:{id},data:{name,cccd,status,dob:dob?new Date(dob):null}}); res.json(emp); });
+employees.delete('/:id', async (req:any,res)=>{ const {id}=req.params; await prisma.employee.delete({where:{id}}); res.json({ok:true}); });
