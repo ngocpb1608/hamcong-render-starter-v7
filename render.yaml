@@ -24,7 +24,7 @@ services:
       - key: PUBLIC_BASE_URL
         fromService:
           name: chamcong-frontend
-          type: static_site
+          type: static
           property: url
       - key: SMTP_URL
         value: ""
@@ -33,11 +33,11 @@ services:
       - key: APP_LOGO_URL
         value: ""
 
-  - type: static_site
+  - type: static
     name: chamcong-frontend
     rootDir: frontend
     buildCommand: npm ci || npm i && npm run build
-    staticPublishPath: dist
+    publishPath: dist
     envVars:
       - key: VITE_API_BASE
         fromService:
